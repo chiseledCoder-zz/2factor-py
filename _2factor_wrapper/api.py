@@ -72,3 +72,108 @@ class TwoFactorSMS(object):
         response = r.json()
 
         return response
+
+
+class TwoFactorVoice(object):
+    ''' Methods for voice OTP '''
+
+    def send_voice_otp(self, custom_otp=None):
+        ''' This endpoint is used to send auto-generated or custom voice otp to India '''
+
+        url = None
+        if custom_otp is None:
+            # Auto generate the OTP
+            url = urls.VoiceOtpUrls.send_voice_otp_url
+        else:
+            url = urls.VoiceOtpUrls.send_custom_voice_otp_url.format(Configure2Factor.get_api_key(), custom_otp)
+
+        r = requests.get(url=url)
+        response = r.json()
+        # Check for Invalid API Key Error
+        return response
+
+    def verify_voice_otp(self, otp_input=None, session_id=None):
+        if otp_input is None:
+            return 'OTP Input cannot be None!'
+
+        url = urls.VoiceOtpUrls.verify_voice_otp_url.format(Configure2Factor.get_api_key(), session_id, otp_input)
+        r = requests.get(url=url)
+        response = r.json()
+
+        return response
+
+class TransactionalSMS(object):
+
+    def check_credi_balance(self):
+        url = urls.TransactionalSMSUrls.check_credit_balance_url.format(Configure2Factor.get_api_key())
+
+        r = requests.get(url=url)
+        response = r.json()
+
+        return response
+
+
+    def pull_deliery_report(self):
+        # POST request
+        pass
+
+    def send_transactional_sms(self, dynamic_tmeplated=None):
+        # POST Request
+        pass
+
+
+class PromotionalSMS(object):
+    def check_credit_balance(self):
+        url = urls.PromotionalSMSUrls.check_credit_balance.format(Configure2Factor.get_api_key())
+
+        r = requests.get(url=url)
+        response = r.json()
+
+        return response
+
+    def send_promotional_sms(self):
+        #  POST Request
+        pass
+
+class BlockListManagement(object):
+    def block_number_voice_service(self, phone_number):
+        # Add phone number validation logic
+        url = urls.BlockListManagementUrls.block_number_voice_service_url.format(Configure2Factor.get_api_key(),
+                                                                                 phone_number)
+
+        r = requests.get(url=url)
+        response = r.json()
+
+        return response
+
+    def unblock_number_voice_service(self, phone_number):
+        # Add phone number validation logic
+
+        url = urls.BlockListManagementUrls.unblock_number_voice_service_url.format(Configure2Factor.get_api_key(),
+                                                                                   phone_number)
+
+        r = requests.get(url=url)
+        response = r.json()
+
+        return response
+
+    def block_number_sms_service(self, phone_number):
+        # Add phone number validation logic
+        url = urls.BlockListManagementUrls.block_number_sms_service_url.format(Configure2Factor.get_api_key(),
+                                                                               phone_number)
+
+        r = requests.get(url=url)
+        response = r.json()
+
+        return response
+
+    def unblock_number_sms_service(self, phone_number):
+        # Add phone number validation logic
+
+        url = urls.BlockListManagementUrls.unblock_number_sms_service_url.format(Configure2Factor.get_api_key(),
+                                                                                 phone_number)
+
+        r = requests.get(url=url)
+        response = r.json()
+
+        return response
